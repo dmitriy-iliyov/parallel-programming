@@ -6,5 +6,5 @@
 
 [lab_6 doc](https://docs.google.com/document/d/1wpC3uUjAGcXTr7FNkv-JWjue7yOi-yMPiel0wpO2CHA/edit?usp=share_link)
 
-[multithreading doc]([https://docs.google.com/document/d/1wpC3uUjAGcXTr7FNkv-JWjue7yOi-yMPiel0wpO2CHA/edit?usp=share_link](https://docs.google.com/document/d/1XSQGX0bSWnhoiZmGRjduhomTWRh2ph-1MIjC3R73tOs/edit)https://docs.google.com/document/d/1XSQGX0bSWnhoiZmGRjduhomTWRh2ph-1MIjC3R73tOs/edit)
+[multithreading doc](https://docs.google.com/document/d/1XSQGX0bSWnhoiZmGRjduhomTWRh2ph-1MIjC3R73tOs/edit)
 

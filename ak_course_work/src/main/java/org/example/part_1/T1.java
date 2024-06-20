@@ -1,4 +1,4 @@
-package org.example;
+package org.example.part_1;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -38,9 +38,6 @@ public class T1 extends Thread{
         }catch(BrokenBarrierException | InterruptedException exc){
             System.out.println(exc.getMessage());
         }
-
-        logger.info("\nB : " + Resources.vectorToString(resources.B));
-        logger.info("\nMX : " + Resources.matrixToString(resources.MX));
 
         try{
             mainBarrier.await();

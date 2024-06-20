@@ -1,4 +1,4 @@
-package org.example;
+package org.example.part_1;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -32,8 +32,6 @@ public class Tp extends Thread{
             System.out.println(exc.getMessage());
         }
 
-        logger.info("\nZ : " + Resources.vectorToString(resources.Z));
-        logger.info("\nMR : " + Resources.matrixToString(resources.MR));
     }
 
     private int getValue(int userValue){

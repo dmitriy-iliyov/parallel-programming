@@ -1,4 +1,4 @@
-package org.example;
+package org.example.part_1;
 
 import java.util.concurrent.CyclicBarrier;
 
@@ -35,15 +35,35 @@ public class WrapperClass {
         CyclicBarrier forthOperationBarrier = new CyclicBarrier(threadsCount);
         CyclicBarrier fifthOperationBarrier = new CyclicBarrier(threadsCount);
 
-        int step = objectSize/threadsCount;
-        int start = 0;
-        int end = step;
-        for(int i = 0; i < threadsCount; i++){
-            Ti ti = new Ti(start, end, resources, enteringBarrier, mainBarrier, firstOperationBarrier,
-                    secondOperationBarrier, thirdOperationBarrier, forthOperationBarrier, fifthOperationBarrier);
-            ti.start();
-            start += step;
-            end += step;
+        if(objectSize % threadsCount == 0){
+            int step = objectSize/threadsCount;
+            int start = 0;
+            int end = step;
+            for(int i = 0; i < threadsCount; i++){
+                Ti ti = new Ti(start, end, resources, enteringBarrier, mainBarrier, firstOperationBarrier,
+                        secondOperationBarrier, thirdOperationBarrier, forthOperationBarrier, fifthOperationBarrier);
+                ti.start();
+                start += step;
+                end += step;
+            }
+        }else{
+            int step = objectSize/threadsCount;
+            int divisionRemainder = objectSize % threadsCount;
+            int start = 0;
+            int end = step;
+            for(int i = 0; i < threadsCount; i++){
+                if(i == threadsCount - 1){
+                    Ti ti = new Ti(start, end + divisionRemainder, resources, enteringBarrier, mainBarrier, firstOperationBarrier,
+                            secondOperationBarrier, thirdOperationBarrier, forthOperationBarrier, fifthOperationBarrier);
+                    ti.start();
+                    break;
+                }
+                Ti ti = new Ti(start, end, resources, enteringBarrier, mainBarrier, firstOperationBarrier,
+                        secondOperationBarrier, thirdOperationBarrier, forthOperationBarrier, fifthOperationBarrier);
+                ti.start();
+                start += step;
+                end += step;
+            }
         }
     }
 

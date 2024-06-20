@@ -1,4 +1,4 @@
-package org.example;
+package org.example.part_1;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -86,8 +86,6 @@ public class Ti extends Thread{
             System.out.println(e.getMessage());
         }
 
-        logger.info("\nMA : " + Resources.matrixToString(resources.MA));
-
         for (int i = start; i < end; i++) {
             for (int j = 0; j < resources.objectsSize; j++) {
                 aElement += resources.MA[i][j] * resources.Z[i];
@@ -108,8 +106,6 @@ public class Ti extends Thread{
             System.out.println(e.getMessage());
         }
 
-        logger.info("\nA : " + Resources.vectorToString(resources.A));
-
         for (int i = start; i < end; i++){
             cElement = resources.A[i] + resources.B[i];
             try{
@@ -128,8 +124,6 @@ public class Ti extends Thread{
             System.out.println(exc.getMessage());
         }
 
-        logger.info("\nC : " + Resources.vectorToString(resources.C));
-
         for (int i = start; i < end; i++)
             partOfc = partOfc + resources.B[i] * resources.Z[i];
         try{
@@ -145,8 +139,6 @@ public class Ti extends Thread{
         } catch (BrokenBarrierException | InterruptedException exc) {
             System.out.println(exc.getMessage());
         }
-
-        logger.info("\nc : " + resources.c);
 
         partOfb = resources.C[0];
         for (int i = start; i < end; i++){
@@ -167,12 +159,11 @@ public class Ti extends Thread{
             System.out.println(exc.getMessage());
         }
 
-        logger.info("\nb : " + resources.b);
-
         try{
             mainBarrier.await();
         }catch(BrokenBarrierException | InterruptedException exc){
             System.out.println(exc.getMessage());
         }
+        Thread.currentThread().stop();
     }
 }

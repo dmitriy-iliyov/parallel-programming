@@ -1,4 +1,4 @@
-package org.example;
+package org.example.part_1;
 
 public class Resources {
     public int objectsSize;

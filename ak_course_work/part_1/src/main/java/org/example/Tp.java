@@ -1,23 +1,12 @@
-package org.example.part_1;
+package org.example;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
-/*
-    a = min(B + Z * (MR * MX)) + (B * Z)
 
-    1. MA = MR * MX
-    2. A = Z * MA
-    3. C = B + A
-    4. b = min(C)
-    5. c = B * Z
-    6. a = b + c
- */
-
-public class Ti extends Thread{
-
+public class Tp extends Thread{
     int start;
     int end;
 
@@ -27,37 +16,34 @@ public class Ti extends Thread{
     private int cElement = 0;
     private int maElement = 0;
 
-    private final Semaphore sem = new Semaphore(1);
+    private final Semaphore sem;
     private final Resources resources;
     private final CyclicBarrier enteringBarrier;
-    private final CyclicBarrier firstOperationBarrier;
-    private final CyclicBarrier secondOperationBarrier;
-    private final CyclicBarrier thirdOperationBarrier;
-    private final CyclicBarrier forthOperationBarrier;
-    private final CyclicBarrier fifthOperationBarrier;
+    private final CyclicBarrier prepareToMinOperationBarrier;
     private final CyclicBarrier mainBarrier;
+    private final Logger logger = Logger.getLogger("Tp");
 
-    private final Logger logger = Logger.getLogger("Ti");
 
-
-    public Ti(int start, int end, Resources resources, CyclicBarrier enteringBarrier, CyclicBarrier mainBarrier,
-              CyclicBarrier firstOperationBarrier, CyclicBarrier secondOperationBarrier,
-              CyclicBarrier thirdOperationBarrier, CyclicBarrier forthOperationBarrier,
-              CyclicBarrier fifthOperationBarrier) {
+    public Tp(int start, int end, Resources resources, Semaphore sem, CyclicBarrier enteringBarrier,
+              CyclicBarrier mainBarrier, CyclicBarrier prepareToMinOperationBarrier) {
         this.start = start;
         this.end = end;
         this.resources = resources;
+        this.sem = sem;
         this.enteringBarrier = enteringBarrier;
-        this.firstOperationBarrier = firstOperationBarrier;
-        this.secondOperationBarrier = secondOperationBarrier;
-        this.thirdOperationBarrier = thirdOperationBarrier;
-        this.forthOperationBarrier = forthOperationBarrier;
-        this.fifthOperationBarrier = fifthOperationBarrier;
         this.mainBarrier = mainBarrier;
+        this.prepareToMinOperationBarrier = prepareToMinOperationBarrier;
     }
 
     @Override
     public void run(){
+        //entering Z, MR
+        for (int i = 0; i < resources.objectsSize; i++) {
+            resources.Z[i] = getValue(1);
+            for (int j = 0; j < resources.objectsSize; j++) {
+                resources.MR[i][j] = getValue(1);
+            }
+        }
         try{
             enteringBarrier.await();
         }catch(BrokenBarrierException | InterruptedException exc){
@@ -80,11 +66,11 @@ public class Ti extends Thread{
                 }
             }
         }
-        try {
-            firstOperationBarrier.await();
-        }catch (BrokenBarrierException | InterruptedException e){
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            firstOperationBarrier.await();
+//        }catch (BrokenBarrierException | InterruptedException e){
+//            System.out.println(e.getMessage());
+//        }
 
         for (int i = start; i < end; i++) {
             for (int j = 0; j < resources.objectsSize; j++) {
@@ -100,11 +86,11 @@ public class Ti extends Thread{
                 sem.release();
             }
         }
-        try {
-            secondOperationBarrier.await();
-        }catch (BrokenBarrierException | InterruptedException e){
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            secondOperationBarrier.await();
+//        }catch (BrokenBarrierException | InterruptedException e){
+//            System.out.println(e.getMessage());
+//        }
 
         for (int i = start; i < end; i++){
             cElement = resources.A[i] + resources.B[i];
@@ -118,11 +104,11 @@ public class Ti extends Thread{
                 sem.release();
             }
         }
-        try{
-            thirdOperationBarrier.await();
-        }catch (BrokenBarrierException | InterruptedException exc){
-            System.out.println(exc.getMessage());
-        }
+//        try{
+//            thirdOperationBarrier.await();
+//        }catch (BrokenBarrierException | InterruptedException exc){
+//            System.out.println(exc.getMessage());
+//        }
 
         for (int i = start; i < end; i++)
             partOfc = partOfc + resources.B[i] * resources.Z[i];
@@ -133,11 +119,6 @@ public class Ti extends Thread{
             System.out.println(exc.getMessage());
         }finally {
             sem.release();
-        }
-        try {
-            forthOperationBarrier.await();
-        } catch (BrokenBarrierException | InterruptedException exc) {
-            System.out.println(exc.getMessage());
         }
 
         partOfb = resources.C[0];
@@ -154,16 +135,23 @@ public class Ti extends Thread{
             sem.release();
         }
         try {
-            fifthOperationBarrier.await();
+            prepareToMinOperationBarrier.await();
         } catch (BrokenBarrierException | InterruptedException exc) {
             System.out.println(exc.getMessage());
         }
-
         try{
             mainBarrier.await();
         }catch(BrokenBarrierException | InterruptedException exc){
             System.out.println(exc.getMessage());
         }
-        Thread.currentThread().stop();
+
+    }
+
+    private int getValue(int userValue){
+        return userValue;
+    }
+
+    private int getValue(){
+        return (int) (Math.random() * 10);
     }
 }

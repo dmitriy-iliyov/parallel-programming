@@ -20,8 +20,6 @@ public class Main {
         int rank = MPI.COMM_WORLD.Rank();
         final int N = 4;
 
-
-
         int [] A = new int [N];
         int [][] MA = new int [N][N];
         int b = 0;

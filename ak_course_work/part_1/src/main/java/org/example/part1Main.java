@@ -5,7 +5,7 @@
  * ПРГ1
  */
 
-package org.example.part_1;
+package org.example;
 
 
 import java.util.concurrent.BrokenBarrierException;
@@ -16,7 +16,7 @@ public class part1Main {
 
         CyclicBarrier endingBarrier = new CyclicBarrier(2);
 
-        WrapperClass wrapperClass = new WrapperClass(10, 10, endingBarrier);
+        WrapperClass wrapperClass = new WrapperClass(1000, 4, endingBarrier);
         wrapperClass.calculation();
         try{
             endingBarrier.await();
